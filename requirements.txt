@@ -1,0 +1,8 @@
+langchain_groq
+langchain_openai
+qdrant-client
+fastembed
+tqdm
+langchain_community
+dotenv
+gradio

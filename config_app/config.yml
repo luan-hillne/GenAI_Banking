@@ -1,0 +1,38 @@
+directories:
+  persist_vector_directory: data/vector_db
+  csv_directory: ./data/seed_tasks.xlsx
+  text_directory: data/data_text
+  
+llm_config:
+  rag_model: gpt-4o-mini-2024-07-18
+  temperature_rag: 0.0
+  temperature_chat: 1.0 # Controls randomness, higher values increase diversity
+  max_token: 1024
+
+retriever_config:
+  embedding_model: BAAI/bge-base-en-v1.5
+  vector_embed_size: 768
+  top_k: 4 #  Sample from the k most likely next tokens at each step. Lower top-k also concentrates sampling on the highest probability tokens for each step.
+  top_p: 0.9 # The cumulative probability cutoff for token selection. Lower top-p values reduce diversity and focus on more probable tokens.
+  score_thres: 0.7
+
+qdrant_config:
+  score_thres: 0.7
+  url_qdrant: https://978a79e0-df2c-4de0-aca4-d538b1883980.europe-west3-0.gcp.cloud.qdrant.io:6333
+  api_key_qdrant: Dgb2jqRfUfmN4ljsZ8JzRN_nH6XCJf4PGsP-HKPc34dk42PWA-NY-Q
+  qdrant_name: qdrant2
+  dense_embedding_model: BAAI/bge-base-en-v1.5
+  bm25_embedding_model: Qdrant/bm25
+  colbert_embedding_model: colbert-ir/colbertv2.0
+  batch_size: 4
+
+chunk_config:
+  chunk_size: 1248
+  chunk_overlap: 200
+
+parameter_config:
+  max_trial: 3
+  limit_qdrant: 5
+  threshold: 0.4
+
+
