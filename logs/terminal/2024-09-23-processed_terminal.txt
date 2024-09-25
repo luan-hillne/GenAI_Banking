@@ -1,0 +1,578 @@
+2024-09-23 15:14:17,675 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+2024-09-23 15:31:23,937 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+2024-09-23 15:31:26,779 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+Example 4:
+
+Paragraph: Cho vay đối với khách hàng cá nhân là cá nhân có quốc tịch Việt Nam, cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam từ đủ 18 tuổi trở lên, có năng lực hành vi dân sự đầy đủ theo quy định của pháp luật hoặc từ đủ 15 tuổi đến chưa đủ 18 tuổi không bị mất , hạn chế, khó khăn trong nhận thức và làm chủ hành vi theo quy định của pháp luật (trong các giao dịch dân sự pháp luật cho phép người dưới 18 tuổi tham gia).
+
+Text_to_Rules: CIVIL_ACT_CAPACITY in ['Có'] <and> NATIONALITY in ['Việt Nam'] <and> AGE >= 15 <thn> LOAN_APPROVAL = 'Cho vay' <eor> CIVIL_ACT_CAPACITY in ['Có'] <and> NATIONALITY not in ['Việt Nam'] <and> AGE >= 15 <and> VISA_VALID_MONTH > 0 <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 5:
+
+Paragraph: Đối với khách hàng là cá nhân, hộ gia đình, tổ hợp tác, hộ kinh doanh, chủ trang trại, hợp tác xã và liên hiệp hợp tác xã, thời gian duy trì hạn mức cho vay tối đa là 36 tháng kể từ ngày kí kết hợp đồng hạn mức cho vay. Thời hạn này có thể được gia hạn khi hết thời hạn nếu khách hàng thực hiện đúng nội dung đã thỏa thuận trong HĐTD và nhu cầu vốn kỳ tiếp theo của khách hàng không thay đổi. Việc gia hạn thời hạn của hạn mức cho vay chỉ thực hiện một lần và thời hạn duy trì hạn mức được gia hạn tối đa là 12 tháng.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân', 'Hộ gia đình', 'Tổ hợp tác', 'Hộ kinh doanh', 'Chủ trang trại', 'Hợp tác xã', 'Liên hiệp hợp tác xã'] <thn> CREDIT_LIMIT_DURATION = 36 <eor> CREDIT_LIMIT_STATUS in ['Hết hạn'] <and> CREDIT_LIMIT_EXPAND_LOAN_APPROVAL in ['Thực hiện đúng nội dung đã thỏa thuận trong HĐTD'] <and> CREDIT_DEMAND in ['Không thay đổi'] <thn> CREDIT_LIMIT_EXPAND_DURATION = 12
+
+
+2024-09-23 15:31:28,541 - INFO: Answer: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 15:54:00,058 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+2024-09-23 15:54:02,658 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+Example 4:
+
+Paragraph: Cho vay đối với khách hàng cá nhân là cá nhân có quốc tịch Việt Nam, cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam từ đủ 18 tuổi trở lên, có năng lực hành vi dân sự đầy đủ theo quy định của pháp luật hoặc từ đủ 15 tuổi đến chưa đủ 18 tuổi không bị mất , hạn chế, khó khăn trong nhận thức và làm chủ hành vi theo quy định của pháp luật (trong các giao dịch dân sự pháp luật cho phép người dưới 18 tuổi tham gia).
+
+Text_to_Rules: CIVIL_ACT_CAPACITY in ['Có'] <and> NATIONALITY in ['Việt Nam'] <and> AGE >= 15 <thn> LOAN_APPROVAL = 'Cho vay' <eor> CIVIL_ACT_CAPACITY in ['Có'] <and> NATIONALITY not in ['Việt Nam'] <and> AGE >= 15 <and> VISA_VALID_MONTH > 0 <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 5:
+
+Paragraph: Đối với khách hàng là cá nhân, hộ gia đình, tổ hợp tác, hộ kinh doanh, chủ trang trại, hợp tác xã và liên hiệp hợp tác xã, thời gian duy trì hạn mức cho vay tối đa là 36 tháng kể từ ngày kí kết hợp đồng hạn mức cho vay. Thời hạn này có thể được gia hạn khi hết thời hạn nếu khách hàng thực hiện đúng nội dung đã thỏa thuận trong HĐTD và nhu cầu vốn kỳ tiếp theo của khách hàng không thay đổi. Việc gia hạn thời hạn của hạn mức cho vay chỉ thực hiện một lần và thời hạn duy trì hạn mức được gia hạn tối đa là 12 tháng.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân', 'Hộ gia đình', 'Tổ hợp tác', 'Hộ kinh doanh', 'Chủ trang trại', 'Hợp tác xã', 'Liên hiệp hợp tác xã'] <thn> CREDIT_LIMIT_DURATION = 36 <eor> CREDIT_LIMIT_STATUS in ['Hết hạn'] <and> CREDIT_LIMIT_EXPAND_LOAN_APPROVAL in ['Thực hiện đúng nội dung đã thỏa thuận trong HĐTD'] <and> CREDIT_DEMAND in ['Không thay đổi'] <thn> CREDIT_LIMIT_EXPAND_DURATION = 12
+
+
+2024-09-23 15:54:06,247 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE > 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 15:56:15,179 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+2024-09-23 15:56:18,905 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 15:56:22,268 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương', 'Các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE > 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 15:59:18,916 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-)  theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+2024-09-23 15:59:23,742 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 15:59:26,300 - INFO: Answer: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:09:48,198 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-)  theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:09:51,157 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 16:09:53,768 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 16:10:30,381 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:10:34,491 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 16:10:37,133 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương', 'Các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'AA+', 'A', 'A+', 'AA-', 'AA', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 16:11:04,480 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:11:07,231 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 16:11:09,592 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'AA+', 'A', 'A+', 'AA-', 'AA', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:16:52,763 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:16:55,594 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+
+2024-09-23 16:17:00,751 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'AA+', 'A', 'A+', 'AA-', 'AA', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:20:13,982 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:20:16,599 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+
+2024-09-23 16:20:19,286 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương', 'các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'AA-', 'AA+', 'A', 'A+', 'AA', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 16:23:40,435 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:23:44,761 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+
+2024-09-23 16:23:47,484 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương', 'Các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = 'Cho vay'
+2024-09-23 16:28:51,317 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:28:54,333 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:28:57,152 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE in ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:34:08,661 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:34:10,969 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:34:12,758 - INFO: Answer: NATIONALITY in ['Việt Nam'] <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> CUSTOMER_AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:36:22,456 - INFO: Query User: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+- Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:36:24,909 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:36:26,589 - INFO: Answer: NATIONALITY in ['Việt Nam'] <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> CUSTOMER_AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:38:15,914 - INFO: Query User: - Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:38:17,988 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:38:19,230 - INFO: Answer: CREDIT_RATING in ['A-', 'AA+', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:39:22,458 - INFO: Query User: - Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:39:25,049 - INFO: Examples: 
+2024-09-23 16:39:26,616 - INFO: Answer: CREDIT_RATING in ['A-', 'AA+'] <and> CUSTOMER_AGE > 22
+2024-09-23 16:40:54,039 - INFO: Query User: - Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:40:55,995 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:40:57,220 - INFO: Answer: CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22
+2024-09-23 16:45:08,681 - INFO: Query User: - Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:46:42,231 - INFO: Query User: - Xếp hạng (A-, 'AA+')  
+- Khách hàng có độ tuổi trên 22 tuổi 
+2024-09-23 16:46:44,330 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:46:46,194 - INFO: Answer: SCORECARD_RANK in ['A-', 'AA+'] <and> CUSTOMER_AGE > 22 <thn> CUSTOMER_CONDITION = Đủ điều kiện
+2024-09-23 16:47:24,796 - INFO: Query User:  Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+2024-09-23 16:47:27,390 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:47:29,353 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+2024-09-23 16:47:38,221 - INFO: Query User:  Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+2024-09-23 16:47:42,090 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+
+2024-09-23 16:47:43,933 - INFO: Answer: LOAN_PURPOSE in ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay

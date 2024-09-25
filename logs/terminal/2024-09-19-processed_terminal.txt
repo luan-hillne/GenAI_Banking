@@ -1,0 +1,53 @@
+2024-09-19 18:09:07,751 - INFO: Query User: - Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+2024-09-19 18:09:31,449 - INFO: Query User: - Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+2024-09-19 18:09:34,439 - INFO: Examples: Example 1:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 2:
+
+Paragraph: Khách hàng đáp ứng đầy đủ các điều kiện như sau:
+- Khách hàng vay mục đích phục vụ nhu cầu đời sống để thanh toán các chi phí cho mục đích tiêu dùng, sinh hoạt của cá nhân đó, gia đình của cá nhân đó, phù hợp quy định của pháp luật.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+
+Text_to_Rules: LOAN_PURPOSE in ['Phục vụ nhu cầu đời sống'] <and> PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'
+
+Example 3:
+
+Paragraph: Thời hạn cho vay tối đa:
+* Chi nhánh và khách hàng thỏa thuận, đảm bảo thời hạn cho vay ≤ thời gian công tác còn lại theo độ tuổi lao động.
+* Đối với cá nhân có quốc tịch nước ngoài cư trú tại Việt Nam, thời hạn cho vay không vượt quá thời hạn được phép cư trú còn lại tại Việt Nam.
+Theo món	7 năm	- Khách hàng là cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước và nhận thu nhập qua tài khoản Ngân hàng. 
+	5 năm	- Khách hàng nhận thu nhập qua tài khoản tiền gửi thanh toán tại Ngân hàng hoặc khách hàng là CBCNV làm việc tại các đơn vị hành chính sự nghiệp nhà nước áp dụng hình thức thu nợ tại nguồn.
+	3 năm	Khách hàng khác.
+Thấu chi	1 năm 
+
+Text_to_Rules: LOAN_METHOD in ['Theo món'] <and> CUSTOMER_POSITION in ['Cán bộ, công nhân viên của cơ quan, đơn vị hành chính sự nghiệp nhà nước'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 84 <eor> LOAN_METHOD in ['Theo món'] <and> INCOME_METHOD in ['Nhận thu nhập qua tài khoản ngân hàng'] <thn> MAX_LOAN_TERM = 60 <eor> LOAN_METHOD in ['Thấu chi'] <thn> MAX_LOAN_TERM = 12
+
+Example 4:
+
+Paragraph: Khoản vay mua nhà dành cho khách hàng có thu nhập từ công việc chính thức, tổng thu nhập hàng tháng từ 20 triệu đồng trở lên. Khách hàng cần có lịch sử tín dụng tốt, không có nợ xấu trong vòng 24 tháng gần nhất.
+
+Text_to_Rules: EMPLOYMENT_TYPE in ['Nhân viên chính thức'] <and> MONTHLY_INCOME >= 20000000 <and> BAD_DEBT_HISTORY in ['Không'] <and> CREDIT_HISTORY_MONTHS >= 24 <thn> LOAN_APPROVAL = 'Chấp nhận' <eor> EMPLOYMENT_TYPE in ['Nhân viên chính thức'] <and> MONTHLY_INCOME < 20000000 <thn> LOAN_APPROVAL = 'Từ chối'
+
+Example 5:
+
+Paragraph: Đối với khách hàng là cá nhân, hộ gia đình, tổ hợp tác, hộ kinh doanh, chủ trang trại, hợp tác xã và liên hiệp hợp tác xã, thời gian duy trì hạn mức cho vay tối đa là 36 tháng kể từ ngày kí kết hợp đồng hạn mức cho vay. Thời hạn này có thể được gia hạn khi hết thời hạn nếu khách hàng thực hiện đúng nội dung đã thỏa thuận trong HĐTD và nhu cầu vốn kỳ tiếp theo của khách hàng không thay đổi. Việc gia hạn thời hạn của hạn mức cho vay chỉ thực hiện một lần và thời hạn duy trì hạn mức được gia hạn tối đa là 12 tháng.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân', 'Hộ gia đình', 'Tổ hợp tác', 'Hộ kinh doanh', 'Chủ trang trại', 'Hợp tác xã', 'Liên hiệp hợp tác xã'] <thn> CREDIT_LIMIT_DURATION = 36 <eor> CREDIT_LIMIT_STATUS in ['Hết hạn'] <and> CREDIT_LIMIT_EXPAND_LOAN_APPROVAL in ['Thực hiện đúng nội dung đã thỏa thuận trong HĐTD'] <and> CREDIT_DEMAND in ['Không thay đổi'] <thn> CREDIT_LIMIT_EXPAND_DURATION = 12
+
+
+2024-09-19 18:09:36,230 - INFO: Answer: PAYMENT_SOURCE in ['Lương và các khoản thu nhập khác có tính chất lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <thn> LOAN_APPROVAL = 'Cho vay'

@@ -9,6 +9,9 @@ from src.gui import AI_assistant
 # '''
 
 # print(run(query_text))
-
 if __name__ == "__main__":
-    AI_assistant()
+    try:
+        AI_assistant()  
+    except Exception as e:
+        # Handle maintenance error or other exceptions
+        print("System is under maintenance. Please try again later.")

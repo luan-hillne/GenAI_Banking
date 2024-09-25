@@ -7,8 +7,10 @@ from fastembed.embedding import TextEmbedding
 from fastembed.sparse.bm25 import Bm25
 from fastembed.late_interaction import LateInteractionTextEmbedding
 from qdrant_client import QdrantClient, models
-from src.utils.load_db import load_dataset, create_client
+from utils.load_db import load_dataset, create_client
+from utils import timing_decorator
 from config_app.model_config import LoadConfig
+
 
 APP_CONFIG = LoadConfig()
 dataset = load_dataset(df=pd.read_excel(APP_CONFIG.csv_directory))
@@ -21,7 +23,8 @@ bm25_embedding_model = Bm25(APP_CONFIG.bm25_model)
 bm25_embeddings = list(bm25_embedding_model.passage_embed(dataset[0]["text"]))
 late_interaction_embedding_model = LateInteractionTextEmbedding(APP_CONFIG.colbert_embedding_model)
 late_interaction_embeddings = list(late_interaction_embedding_model.passage_embed(dataset[0]["text"]))
-    
+
+@timing_decorator
 def run_search(query_text: str, limit, threshold) -> str:
     query_dense_embedding = next(dense_embedding_model.query_embed([query_text]))
     query_bm25_embedding = next(bm25_embedding_model.query_embed([query_text]))
@@ -57,7 +60,7 @@ def run_search(query_text: str, limit, threshold) -> str:
     script = ""
     for doc, score in results:
         for i in range(len(score)):
-            if score[i].score > threshold:
+            if score[i].score > threshold and i < 1:
             # print(score[i].payload)
-                script += f"Example {i+1}:\n\nParagraph: {score[i].payload['text']}\n\nText_to_Rules: {score[i].payload['rules']}\n\n"
+                script += f"Example {i+1}:\n\nParagraph: {score[i].payload['text']}\n\nRules: {score[i].payload['rules']}\n\n"
     return script

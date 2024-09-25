@@ -9,10 +9,15 @@ llm_config:
   temperature_chat: 1.0 # Controls randomness, higher values increase diversity
   max_token: 1024
 
+azure_llm_config:
+  OPENAI_AZURE_ENDPOINT: https://gradopenai.openai.azure.com/
+  OPENAI_AZURE_API_VERSION: https://gradopenai.openai.azure.com/
+  MODE: dev
+  
 retriever_config:
   embedding_model: BAAI/bge-base-en-v1.5
   vector_embed_size: 768
-  top_k: 4 #  Sample from the k most likely next tokens at each step. Lower top-k also concentrates sampling on the highest probability tokens for each step.
+  top_k: 5 #  Sample from the k most likely next tokens at each step. Lower top-k also concentrates sampling on the highest probability tokens for each step.
   top_p: 0.9 # The cumulative probability cutoff for token selection. Lower top-p values reduce diversity and focus on more probable tokens.
   score_thres: 0.7
 
@@ -32,7 +37,7 @@ chunk_config:
 
 parameter_config:
   max_trial: 3
-  limit_qdrant: 5
+  limit_qdrant: 3
   threshold: 0.4
 
 

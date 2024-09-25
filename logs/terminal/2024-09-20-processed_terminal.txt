@@ -1,0 +1,264 @@
+2024-09-20 16:50:32,499 - INFO: input file pdf
+2024-09-20 16:50:34,550 - INFO: Examples: Example 1:
+
+Paragraph: Đối với TSBĐ là Bất động sản đã được cấp GCN (bao gồm cả Nhà ở, Đất ở mua tại Dự án BĐS đã hình thành và được CĐT bàn giao GCN cho KH vay vốn thực hiện thế chấp): Thời hạn định giá lại TSBĐ tối đa 18 tháng/lần.
+
+Text_to_Rules: COLLATERAL_TYPE in ['Bất động sản'] <and> COLLATERAL_STATUS in ['Đã được cấp giấy chứng nhận quyền sử dụng'] <thn> COLLATERAL_REVALUATION_FREQUENCY = 18
+
+Example 2:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 3:
+
+Paragraph: Chính sách phê duyệt khoản vay của ngân hàng phụ thuộc vào điểm tín dụng của khách hàng. 
+STT	Điểm tín dụng	Mức cho vay tối đa 
+1	750	1000000000
+2	500 - 749	500000000
+3	Dưới 500	200000000
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE >= 750 <thn> MAX_LOAN_LIMIT = 500000000 <eor> CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE < 750 <and> CREDIT_SCORE >= 500 <thn> MAX_LOAN_LIMIT = 200000000
+
+Example 4:
+
+Paragraph: Đối với các khoản vay không có tài sản đảm bảo có thời hạn vay trên 10 năm, ngân hàng yêu cầu xác minh năng lực tài chính của khách hàng thông qua báo cáo tài chính được kiểm toán của 2 năm gần nhất.
+
+Text_to_Rules: LOAN_TERM > 10 <and> SECURE_TYPE in ['Không TSBĐ'] <thn> FINANCIAL_VERIFICATION_REQUIRED = 'Báo cáo tài chính kiểm toán 2 năm gần nhất'
+
+Example 5:
+
+Paragraph: Khách hàng là doanh nghiệp vừa và nhỏ có nhu cầu vay vốn để mở rộng sản xuất nhưng không có tài sản đảm bảo có thể được cấp tín dụng với hạn mức 500 triệu đồng và thời hạn vay tối đa 5 năm.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng doanh nghiệp MSME'] <and> LOAN_PURPOSE in ['Mở rộng sản xuất'] <and> COLLATERAL_ABILITY in ['Không'] <thn> MAX_CREDIT_LIMIT = 500000000 <and> MAX_LOAN_TERM = 60
+
+
+2024-09-20 16:55:52,102 - INFO: Query text: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ 
+
+2024-09-20 16:55:52,102 - INFO: Answer: LOAN_TYPE in ['Tín chấp'] <and> CUSTOMER_TYPE in ['Khách hàng cá nhân'] <thn> LOAN_APPROVAL = 'Phòng sản phẩm cho vay tín chấp – Khối bán lẻ' 
+
+2024-09-20 16:58:52,428 - INFO: Query text: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ 
+
+2024-09-20 16:58:52,428 - INFO: Answer: LOAN_TYPE in ['Tín chấp'] <and> CUSTOMER_TYPE in ['Khách hàng cá nhân', 'Hộ gia đình'] <thn> LOAN_APPROVAL = 'Phê duyệt cho vay tín chấp' 
+
+2024-09-20 16:58:54,052 - INFO: Query text: 13. Phòng KSTT Phòng Kiểm soát tuân thủ 
+
+2024-09-20 16:58:54,052 - INFO: Answer: <and> 
+
+2024-09-20 16:58:55,836 - INFO: Query text: 14. P.QLRRDN Phòng quản lý rủi ro doanh nghiệp – Khối quản lý rủi ro tín dụng 
+
+2024-09-20 16:58:55,836 - INFO: Answer: N/A 
+
+2024-09-20 16:58:57,639 - INFO: Query text: 15. TCTD Tổ chức tín dụng 
+
+2024-09-20 16:58:57,639 - INFO: Answer: TCTD 
+
+2024-09-20 16:58:59,789 - INFO: Query text: 16. TSBĐ Tài sản bảo đảm 
+
+2024-09-20 16:58:59,789 - INFO: Answer: COLLATERAL_TYPE in ['Tài sản bảo đảm'] <thn> COLLATERAL_STATUS = 'Đã được cấp giấy chứng nhận quyền sử dụng' 
+
+2024-09-20 16:59:01,652 - INFO: Query text: 17. TTBL Trung tâm bán lẻ - Khối bán lẻ 
+
+2024-09-20 16:59:01,652 - INFO: Answer: TTBL in ['Trung tâm bán lẻ'] <and> BUSINESS_UNIT in ['Khối bán lẻ'] 
+
+2024-09-20 16:59:03,476 - INFO: Query text: 18. TT TTĐ&PDTD Trung tâm tái thẩm định và phê duyệt tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 16:59:03,476 - INFO: Answer: N/A 
+
+2024-09-20 16:59:05,507 - INFO: Query text: 19. TT XLGDTD Trung tâm xử lý giao dịch tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 16:59:05,507 - INFO: Answer: TT_XLGDTD in ['Trung tâm xử lý giao dịch tín dụng'] <and> BLOCK in ['Quản lý tín dụng'] 
+
+2024-09-20 16:59:07,468 - INFO: Query text: 20. Hệ thống T24 Là hệ thống phần mềm dùng để nhập liệu và quản lý dữ liệu của OCB. 
+
+2024-09-20 16:59:07,468 - INFO: Answer: Hệ thống T24 = 'Phần mềm dùng để nhập liệu và quản lý dữ liệu của OCB' 
+
+2024-09-20 16:59:10,333 - INFO: Query text: 21. Hệ thống BPM Là hệ thống phần mềm dùng để trả kết quả KH thỏa/không thỏa điều kiện vay theo chương trình này; thông tin về hạn mức thấu chi và thời hạn của hạn mức thấu chi của KH. Đồng thời, lưu trữ các thông tin này tại hệ thống. 
+
+2024-09-20 16:59:10,333 - INFO: Answer: Hệ thống BPM là hệ thống phần mềm dùng để trả kết quả KH thỏa/không thỏa điều kiện vay theo chương trình này <and> lưu trữ thông tin về hạn mức thấu chi <and> thời hạn của hạn mức thấu chi của KH 
+
+2024-09-20 16:59:12,490 - INFO: Query text: 1. Đối tượng khách hàng và phạm vi áp dụng   
+
+2024-09-20 16:59:12,490 - INFO: Answer: Đối tượng khách hàng và phạm vi áp dụng 
+
+2024-09-20 17:06:59,774 - INFO: Query text: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ 
+
+2024-09-20 17:06:59,774 - INFO: Answer: <and> 
+
+2024-09-20 17:07:01,481 - INFO: Query text: 13. Phòng KSTT Phòng Kiểm soát tuân thủ 
+
+2024-09-20 17:07:01,481 - INFO: Answer: Phòng KSTT Phòng Kiểm soát tuân thủ 
+
+2024-09-20 17:07:03,200 - INFO: Query text: 14. P.QLRRDN Phòng quản lý rủi ro doanh nghiệp – Khối quản lý rủi ro tín dụng 
+
+2024-09-20 17:07:03,200 - INFO: Answer: <and> 
+
+2024-09-20 17:07:05,344 - INFO: Query text: 15. TCTD Tổ chức tín dụng 
+
+2024-09-20 17:07:05,344 - INFO: Answer: TCTD 
+
+2024-09-20 17:07:07,325 - INFO: Query text: 16. TSBĐ Tài sản bảo đảm 
+
+2024-09-20 17:07:07,325 - INFO: Answer: COLLATERAL_TYPE in ['Tài sản bảo đảm'] 
+
+2024-09-20 17:07:09,136 - INFO: Query text: 17. TTBL Trung tâm bán lẻ - Khối bán lẻ 
+
+2024-09-20 17:07:09,136 - INFO: Answer: 17. TTBL Trung tâm bán lẻ - Khối bán lẻ 
+
+2024-09-20 17:07:11,082 - INFO: Query text: 18. TT TTĐ&PDTD Trung tâm tái thẩm định và phê duyệt tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 17:07:11,082 - INFO: Answer: N/A 
+
+2024-09-20 17:07:13,167 - INFO: Query text: 19. TT XLGDTD Trung tâm xử lý giao dịch tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 17:07:13,167 - INFO: Answer: <and> 
+
+2024-09-20 17:07:15,314 - INFO: Query text: 20. Hệ thống T24 Là hệ thống phần mềm dùng để nhập liệu và quản lý dữ liệu của OCB. 
+
+2024-09-20 17:07:15,314 - INFO: Answer: HỆ_THỐNG in ['T24'] <thn> QUẢN_LÝ_DỮ_LIEU = 'OCB' 
+
+2024-09-20 17:07:18,387 - INFO: Query text: 21. Hệ thống BPM Là hệ thống phần mềm dùng để trả kết quả KH thỏa/không thỏa điều kiện vay theo chương trình này; thông tin về hạn mức thấu chi và thời hạn của hạn mức thấu chi của KH. Đồng thời, lưu trữ các thông tin này tại hệ thống. 
+
+2024-09-20 17:07:18,387 - INFO: Answer: BPM_SYSTEM = 'Hệ thống phần mềm dùng để trả kết quả KH thỏa/không thỏa điều kiện vay theo chương trình này' <and> STORE_INFORMATION = 'Lưu trữ thông tin về hạn mức thấu chi và thời hạn của hạn mức thấu chi của KH' 
+
+2024-09-20 17:07:20,482 - INFO: Query text: 1. Đối tượng khách hàng và phạm vi áp dụng   
+
+2024-09-20 17:07:20,482 - INFO: Answer: Đối tượng khách hàng và phạm vi áp dụng 
+
+2024-09-20 17:10:43,612 - INFO: Query text: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ 
+
+2024-09-20 17:10:43,612 - INFO: Answer: P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ 
+
+2024-09-20 17:10:45,920 - INFO: Query text: 13. Phòng KSTT Phòng Kiểm soát tuân thủ 
+
+2024-09-20 17:10:45,920 - INFO: Answer: Phòng KSTT Phòng Kiểm soát tuân thủ 
+
+2024-09-20 17:10:47,905 - INFO: Query text: 14. P.QLRRDN Phòng quản lý rủi ro doanh nghiệp – Khối quản lý rủi ro tín dụng 
+
+2024-09-20 17:10:47,905 - INFO: Answer: N/A 
+
+2024-09-20 17:10:49,795 - INFO: Query text: 15. TCTD Tổ chức tín dụng 
+
+2024-09-20 17:10:49,795 - INFO: Answer: TCTD = 'Tổ chức tín dụng' 
+
+2024-09-20 17:10:52,100 - INFO: Query text: 16. TSBĐ Tài sản bảo đảm 
+
+2024-09-20 17:10:52,100 - INFO: Answer: <and> COLLATERAL_TYPE in ['Tài sản bảo đảm'] <thn> COLLATERAL_STATUS in ['Đã được cấp giấy chứng nhận quyền sử dụng'] 
+
+2024-09-20 17:10:54,182 - INFO: Query text: 17. TTBL Trung tâm bán lẻ - Khối bán lẻ 
+
+2024-09-20 17:10:54,182 - INFO: Answer: N/A 
+
+2024-09-20 17:10:55,989 - INFO: Query text: 18. TT TTĐ&PDTD Trung tâm tái thẩm định và phê duyệt tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 17:10:55,989 - INFO: Answer: N/A 
+
+2024-09-20 17:10:58,959 - INFO: Query text: 19. TT XLGDTD Trung tâm xử lý giao dịch tín dụng – Khối Quản lý tín dụng 
+
+2024-09-20 17:10:58,959 - INFO: Answer: N/A 
+
+2024-09-20 17:11:01,622 - INFO: Query text: 20. Hệ thống T24 Là hệ thống phần mềm dùng để nhập liệu và quản lý dữ liệu của OCB. 
+
+2024-09-20 17:11:01,622 - INFO: Answer: HỆ_THỐNG in ['T24'] <thn> QUẢN_LÝ_DỮ_LIEU = 'OCB' 
+
+2024-09-20 17:11:05,104 - INFO: Query text: 21. Hệ thống BPM Là hệ thống phần mềm dùng để trả kết quả KH thỏa/không thỏa điều kiện vay theo chương trình này; thông tin về hạn mức thấu chi và thời hạn của hạn mức thấu chi của KH. Đồng thời, lưu trữ các thông tin này tại hệ thống. 
+
+2024-09-20 17:11:05,104 - INFO: Answer: BPM_SYSTEM = 'Hệ thống phần mềm dùng để trả kết quả khách hàng thỏa/không thỏa điều kiện vay theo chương trình này' <and> INFORMATION_STORAGE = 'Lưu trữ thông tin về hạn mức thấu chi và thời hạn của hạn mức thấu chi của khách hàng' 
+
+2024-09-20 17:11:07,292 - INFO: Query text: 1. Đối tượng khách hàng và phạm vi áp dụng   
+
+2024-09-20 17:11:07,292 - INFO: Answer: <and> 
+
+2024-09-20 17:23:49,077 - INFO: Query User: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ
+2024-09-20 17:23:51,027 - INFO: Examples: Example 1:
+
+Paragraph: Đối với TSBĐ là Bất động sản đã được cấp GCN (bao gồm cả Nhà ở, Đất ở mua tại Dự án BĐS đã hình thành và được CĐT bàn giao GCN cho KH vay vốn thực hiện thế chấp): Thời hạn định giá lại TSBĐ tối đa 18 tháng/lần.
+
+Text_to_Rules: COLLATERAL_TYPE in ['Bất động sản'] <and> COLLATERAL_STATUS in ['Đã được cấp giấy chứng nhận quyền sử dụng'] <thn> COLLATERAL_REVALUATION_FREQUENCY = 18
+
+Example 2:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+
+Example 3:
+
+Paragraph: Chính sách phê duyệt khoản vay của ngân hàng phụ thuộc vào điểm tín dụng của khách hàng. 
+STT	Điểm tín dụng	Mức cho vay tối đa 
+1	750	1000000000
+2	500 - 749	500000000
+3	Dưới 500	200000000
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE >= 750 <thn> MAX_LOAN_LIMIT = 500000000 <eor> CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE < 750 <and> CREDIT_SCORE >= 500 <thn> MAX_LOAN_LIMIT = 200000000
+
+Example 4:
+
+Paragraph: Đối với các khoản vay không có tài sản đảm bảo có thời hạn vay trên 10 năm, ngân hàng yêu cầu xác minh năng lực tài chính của khách hàng thông qua báo cáo tài chính được kiểm toán của 2 năm gần nhất.
+
+Text_to_Rules: LOAN_TERM > 10 <and> SECURE_TYPE in ['Không TSBĐ'] <thn> FINANCIAL_VERIFICATION_REQUIRED = 'Báo cáo tài chính kiểm toán 2 năm gần nhất'
+
+Example 5:
+
+Paragraph: Khách hàng là doanh nghiệp vừa và nhỏ có nhu cầu vay vốn để mở rộng sản xuất nhưng không có tài sản đảm bảo có thể được cấp tín dụng với hạn mức 500 triệu đồng và thời hạn vay tối đa 5 năm.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng doanh nghiệp MSME'] <and> LOAN_PURPOSE in ['Mở rộng sản xuất'] <and> COLLATERAL_ABILITY in ['Không'] <thn> MAX_CREDIT_LIMIT = 500000000 <and> MAX_LOAN_TERM = 60
+
+
+2024-09-20 17:23:51,736 - INFO: Answer: <and>
+2024-09-20 17:24:32,036 - INFO: Query User: 12. P.SPCV TC RB Phòng sản phẩm cho vay tín chấp – Khối bán lẻ
+2024-09-20 17:24:33,901 - INFO: Examples: Example 1:
+
+Paragraph: Đối với TSBĐ là Bất động sản đã được cấp GCN (bao gồm cả Nhà ở, Đất ở mua tại Dự án BĐS đã hình thành và được CĐT bàn giao GCN cho KH vay vốn thực hiện thế chấp): Thời hạn định giá lại TSBĐ tối đa 18 tháng/lần.
+
+Text_to_Rules: COLLATERAL_TYPE in ['Bất động sản'] <and> COLLATERAL_STATUS in ['Đã được cấp giấy chứng nhận quyền sử dụng'] <thn> COLLATERAL_REVALUATION_FREQUENCY = 18
+
+Example 2:
+
+Paragraph: Điều kiện cho vay đối với khách hàng cá nhân vay các nhu cầu về tiêu dùng không có tài sản bảo đảm: 
+- Khách hàng là cá nhân có quốc tịch Việt Nam 
+-  Khách hàng sinh sống và làm việc thường xuyên tại tỉnh/thành phố Chi nhánh cho vay.
+- Có nguồn trả nợ là thu nhập thường xuyên, ổn định từ lương và các khoản thu nhập khác có tính chất lương như phụ cấp, không bao gồm thưởng của khách hàng.
+- Thu nhập bình quân hàng tháng: từ 3 triệu đồng/tháng.
+- Xếp hạng (A-) trở lên theo hệ thống xếp hạng tín dụng nội bộ của Ngân hàng đối với khách hàng cá nhân.
+- Khách hàng có độ tuổi trên 22 tuổi
+
+Text_to_Rules: LOAN_PURPOSE ['Tiêu dùng'] <and> SECURE_TYPE in ['Không TSBĐ'] <and> NATIONALITY in ['Việt Nam'] <and> PERMANENT_ADDRESS in ['Tỉnh/thành phố Chi nhánh vay'] <and> INCOME_SOURCE ['Lương'] <and> MONTHLY_INCOME >= 3000000 <and> CREDIT_RATING in ['A-', 'A', 'A+', 'AA-', 'AA', 'AA+', 'AAA'] <and> AGE >= 22 <thn> LOAN_APPROVAL = Cho vay
+[{'output_name': 'CUSTOMER_CONDITION', 'output_value': 'Đáp ứng', 'criterions': "NATIONALITY in ['Việt Nam'] <and> RESIDENCE_CITY = LOAN_BRANCH_CITY <and> INCOME_SOURCE in ['Lương', 'Phụ cấp'] <and> AVG_MONTHLY_INCOME >= 3000000 <and> CREDIT_RANK >= 'A-' <and> AGE > 22"}]
+Example 3:
+
+Paragraph: Chính sách phê duyệt khoản vay của ngân hàng phụ thuộc vào điểm tín dụng của khách hàng. 
+STT	Điểm tín dụng	Mức cho vay tối đa 
+1	750	1000000000
+2	500 - 749	500000000
+3	Dưới 500	200000000
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE >= 750 <thn> MAX_LOAN_LIMIT = 500000000 <eor> CUSTOMER_TYPE in ['Khách hàng cá nhân'] <and> LOAN_TYPE in ['Tín chấp'] <and> CREDIT_SCORE < 750 <and> CREDIT_SCORE >= 500 <thn> MAX_LOAN_LIMIT = 200000000
+
+Example 4:
+
+Paragraph: Đối với các khoản vay không có tài sản đảm bảo có thời hạn vay trên 10 năm, ngân hàng yêu cầu xác minh năng lực tài chính của khách hàng thông qua báo cáo tài chính được kiểm toán của 2 năm gần nhất.
+
+Text_to_Rules: LOAN_TERM > 10 <and> SECURE_TYPE in ['Không TSBĐ'] <thn> FINANCIAL_VERIFICATION_REQUIRED = 'Báo cáo tài chính kiểm toán 2 năm gần nhất'
+
+Example 5:
+
+Paragraph: Khách hàng là doanh nghiệp vừa và nhỏ có nhu cầu vay vốn để mở rộng sản xuất nhưng không có tài sản đảm bảo có thể được cấp tín dụng với hạn mức 500 triệu đồng và thời hạn vay tối đa 5 năm.
+
+Text_to_Rules: CUSTOMER_TYPE in ['Khách hàng doanh nghiệp MSME'] <and> LOAN_PURPOSE in ['Mở rộng sản xuất'] <and> COLLATERAL_ABILITY in ['Không'] <thn> MAX_CREDIT_LIMIT = 500000000 <and> MAX_LOAN_TERM = 60
+
+
+2024-09-20 17:24:34,856 - INFO: Answer: <and>

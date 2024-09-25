@@ -6,3 +6,5 @@ tqdm
 langchain_community
 dotenv
 gradio
+#python3 -m venv .venv
+#python -m venv .venv

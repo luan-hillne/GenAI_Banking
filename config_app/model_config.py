@@ -58,3 +58,4 @@ class LoadConfig:
         self.retrieval_top_k = 5
         self.threshold = 0.4
 
+    

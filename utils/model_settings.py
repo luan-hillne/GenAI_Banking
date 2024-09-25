@@ -3,8 +3,8 @@ class Model_Settings:
         self.MODEL_TYPE = "ChatOpenAI"
         self.MODEL_NAME = 'gpt-4o-mini-2024-07-18'
         self.MAX_TOKEN = 2048
-        self.TEMPERATURE = 0.5
-        self.TOP_K = 100
+        self.TEMPERATURE = 0.2
+        self.TOP_K = 50
         self.TOP_P = 1
         self.REPEAT_PENALTY = 1.2
         self.SYSTEM_PROMPT = ""

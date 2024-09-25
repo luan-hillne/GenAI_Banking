@@ -1,0 +1,2 @@
+2024-09-19 18:09:10,227 - INFO: Hàm RUN_SEARCH thực thi trong 2.4760 giây
+2024-09-19 18:09:34,438 - INFO: Hàm RUN_SEARCH thực thi trong 2.9893 giây
